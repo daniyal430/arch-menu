@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Arch Restaurant & Cafe digital menu">
+<meta name="theme-color" content="#9A2E1F">
+<title>Arch Restaurant & Cafe Menu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --rust:#9A2E1F; --wine:#7E1A17; --coffee:#C77A1C; --cream:#F6EACE; --cream-2:#EFDFB9;
+  --paper:#FBF6EA; --sky:#CFE2EA; --ink:#3A2118; --ink-2:#7A5A4A; --line:#E4D3AE;
+  --shadow:0 6px 18px rgba(90,40,20,.12);
+  --display:"Josefin Sans","Trebuchet MS",sans-serif; --body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--coffee);outline-offset:2px}
+img{max-width:100%;display:block}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px 40px}
+
+/* header */
+header{background:var(--rust);color:#fff;padding:calc(env(safe-area-inset-top,0px) + 18px) 16px 22px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:repeating-linear-gradient(90deg,var(--coffee) 0 14px,transparent 14px 28px);opacity:.7}
+.brand{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px}
+.brand svg{width:84px;height:84px;flex:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
+.brand h1{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(22px,5.2vw,32px);letter-spacing:.14em;text-transform:uppercase;line-height:1.05}
+.brand p{margin:6px 0 0;font-family:var(--display);letter-spacing:.22em;text-transform:uppercase;font-size:11.5px;opacity:.85}
+.brand .ar{font-family:var(--body);letter-spacing:0;font-size:15px;text-transform:none;opacity:.95}
+
+/* search */
+.search{margin:18px 0 6px;position:relative}
+.search input{width:100%;padding:12px 44px 12px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font:inherit;font-size:15px;color:var(--ink)}
+.search input::placeholder{color:#a08a78}
+.search svg{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;stroke:var(--coffee);fill:none;stroke-width:2.2}
+
+/* meal tabs */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 0 6px;scrollbar-width:none;-ms-overflow-style:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:10px 16px;border-radius:999px;background:#fff;border:1.5px solid var(--line);font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12.5px;color:var(--ink-2);display:flex;align-items:center;gap:7px;transition:.15s}
+.tab[aria-selected="true"]{background:var(--rust);border-color:var(--rust);color:#fff}
+.tab span.n{font-family:var(--body);font-weight:800;font-size:11px;background:rgba(0,0,0,.08);padding:2px 7px;border-radius:999px}
+.tab[aria-selected="true"] span.n{background:rgba(255,255,255,.22)}
+
+h2.sec{font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--rust);margin:22px 0 10px;display:flex;align-items:center;gap:12px}
+h2.sec::after{content:"";flex:1;height:1.5px;background:var(--line)}
+
+/* category cards */
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.cat{position:relative;border-radius:16px;overflow:hidden;background:var(--cream);box-shadow:var(--shadow);aspect-ratio:1/1;max-width:100%;text-align:left;padding:0;transition:transform .15s}
+.cat:hover{transform:translateY(-2px)}
+.cat img{width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.cat .lbl{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 11px;background:linear-gradient(to top,rgba(70,20,10,.85),rgba(70,20,10,0));color:#fff;font-family:var(--display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:13.5px;line-height:1.2}
+.cat .lbl small{display:block;font-family:var(--body);font-weight:600;letter-spacing:0;text-transform:none;font-size:11.5px;opacity:.8;margin-top:2px}
+
+/* items view */
+.topbar{display:flex;align-items:center;gap:10px;margin:16px 0 4px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);padding:10px 0;z-index:5}
+.back{width:42px;height:42px;border-radius:50%;background:#fff;border:1.5px solid var(--line);display:grid;place-items:center;flex:none}
+.back svg{width:20px;height:20px;stroke:var(--rust);fill:none;stroke-width:2.4}
+.topbar h2{margin:0;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:18px;color:var(--rust);line-height:1.1}
+.topbar h2 small{display:block;font-family:var(--body);text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-2);font-weight:600;margin-top:3px}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-top:10px}
+@media(max-width:380px){.items{grid-template-columns:1fr 1fr}}
+.item{background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);text-align:left;padding:0;display:flex;flex-direction:column;transition:transform .15s}
+.item:hover{transform:translateY(-2px)}
+.item .ph{background:var(--cream);aspect-ratio:1/1;max-width:100%;display:grid;place-items:center}
+.item .ph img{width:100%;height:100%;object-fit:cover}
+.item .ph .noimg{font-size:40px;opacity:.55}
+.item .txt{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px;flex:1}
+.item .nm{font-weight:800;font-size:14.5px;line-height:1.2;color:var(--ink)}
+.item .nm .ar{display:block;font-weight:600;font-size:13px;color:var(--ink-2)}
+.item .row{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-top:auto;font-variant-numeric:tabular-nums}
+.price{color:var(--rust);font-weight:800;font-size:15px;white-space:nowrap}
+.price.multi{font-size:11.5px;line-height:1.3;white-space:normal}
+.kcal{font-size:11.5px;color:var(--ink-2);font-weight:600;white-space:nowrap}
+
+/* detail sheet */
+.sheet-bg{position:fixed;inset:0;background:rgba(40,15,8,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center;padding:0}
+.sheet{background:var(--paper);width:100%;max-width:560px;border-radius:24px 24px 0 0;max-height:92vh;overflow:auto;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);animation:up .22s ease-out}
+@media(min-width:600px){.sheet-bg{align-items:center;padding:20px}.sheet{border-radius:24px}}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.sheet{animation:none}.cat,.item{transition:none}}
+.sheet .ph{background:var(--cream);aspect-ratio:1/1;max-height:60vh;max-width:100%;display:grid;place-items:center}
+.sheet .ph img{width:100%;height:100%;object-fit:contain}
+.sheet .body{padding:18px 20px 8px}
+.sheet h3{margin:0;font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase;color:var(--rust);line-height:1.15;text-wrap:balance}
+.sheet .ar{font-size:17px;color:var(--ink-2);font-weight:700;margin:4px 0 0}
+.sheet .meta{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 6px;align-items:center}
+.chip{background:var(--cream);color:var(--ink);padding:8px 14px;border-radius:999px;font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
+.chip.p{background:var(--rust);color:#fff}
+.chip.k{font-weight:700;font-size:13px;color:var(--ink-2)}
+.sheet .desc{margin:10px 0 0;color:var(--ink-2);font-size:14px}
+.sheet .catlink{margin:10px 0 0;font-size:12.5px;color:var(--ink-2);font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;box-shadow:var(--shadow)}
+.close svg{width:18px;height:18px;stroke:var(--rust);stroke-width:2.6;fill:none}
+.sheet .phwrap{position:relative}
+
+.empty{padding:40px 12px;text-align:center;color:var(--ink-2)}
+footer{margin-top:36px;text-align:center;font-size:12px;color:var(--ink-2);font-weight:600}
+footer .lg{font-family:var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-size:11px;margin-bottom:4px}
+</style>
+
+</head>
+<body>
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="#8F2A1D"/>
+      <circle cx="50" cy="50" r="42" fill="#FBF6EA"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#8F2A1D" stroke-width="1.2"/>
+      <circle cx="50" cy="50" r="31" fill="#CFE2EA"/>
+      <path d="M19 55 Q35 46 50 52 T81 55 L81 78 Q50 92 19 78Z" fill="#EFDFB9"/>
+      <path d="M40 38 q-4-5 0-10 q3-4 0-8 M47 36 q-4-5 0-10 q3-4 0-8 M54 38 q-4-5 0-10 q3-4 0-8" stroke="#C77A1C" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M33 44 h30 l-4 14 h-22z" fill="#C77A1C"/>
+      <path d="M63 46 q8 0 7 6 q-1 5-8 4" stroke="#C77A1C" stroke-width="2.4" fill="none"/>
+      <rect x="31" y="59" width="34" height="3" rx="1.5" fill="#C77A1C"/>
+      <path d="M36 66 l24 14 M60 66 l-24 14" stroke="#8F2A1D" stroke-width="3" stroke-linecap="round"/>
+      <path d="M58 64 v6 M61 64 v6 M64 64 v6" stroke="#8F2A1D" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h1>Arch</h1>
+      <p>Restaurant &amp; Cafe</p>
+      <p class="ar">مطعم وكافيه آرش</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+const MENU = {"groups":[{"name":"Breakfast","icon":"☀️","cats":["Pancakes","Crepes","Waffles","Eggs & Breakfast","Arabic Breakfast"]},{"name":"Lunch & Dinner","icon":"🍽️","cats":["Appetizers","Salads","Pizza","Sandwiches","Burgers","Pasta","Main Course"]},{"name":"Drinks","icon":"☕","cats":["Hot Drinks","Iced Beverages","Milkshakes","Fresh Juices","Mojito","Tea","Soft Drinks"]},{"name":"Desserts","icon":"🍨","cats":["Ice Cream"]}],"items":[{"cat":"Pancakes","name":"Classic Pancakes","ar":null,"price":27,"kcal":743,"desc":null,"img":"001.jpg"},{"cat":"Pancakes","name":"Strawberry Pancakes","ar":null,"price":35,"kcal":718,"desc":null,"img":"002.jpg"},{"cat":"Pancakes","name":"Mix Berry Pancake","ar":null,"price":39,"kcal":669,"desc":null,"img":"003.jpg"},{"cat":"Pancakes","name":"Mix Fruit Pancake","ar":null,"price":45,"kcal":926,"desc":null,"img":"004.jpg"},{"cat":"Pancakes","name":"Lotus Pancakes","ar":null,"price":39,"kcal":933,"desc":null,"img":"005.jpg"},{"cat":"Pancakes","name":"Pistachio Pancakes","ar":null,"price":45,"kcal":888,"desc":null,"img":"006.jpg"},{"cat":"Pancakes","name":"Raffaello Pancakes","ar":null,"price":39,"kcal":967,"desc":null,"img":"007.jpg"},{"cat":"Pancakes","name":"Ferrero Pancakes","ar":null,"price":39,"kcal":828,"desc":null,"img":"008.jpg"},{"cat":"Pancakes","name":"Kinder Pancakes","ar":null,"price":39,"kcal":928,"desc":null,"img":"009.jpg"},{"cat":"Pancakes","name":"Belgium Pancakes","ar":null,"price":39,"kcal":941,"desc":null,"img":"010.jpg"},{"cat":"Pancakes","name":"Koko Loco Coin","ar":null,"price":49,"kcal":941,"desc":null,"img":"011.jpg"},{"cat":"Crepes","name":"Brownie Crepe","ar":null,"price":45,"kcal":917,"desc":null,"img":"012.jpg"},{"cat":"Crepes","name":"Mix Fruit Crepe","ar":null,"price":45,"kcal":490,"desc":null,"img":"013.jpg"},{"cat":"Crepes","name":"Banana Crepe","ar":null,"price":39,"kcal":522,"desc":null,"img":"014.jpg"},{"cat":"Crepes","name":"Pistachio Crepe","ar":null,"price":45,"kcal":888,"desc":null,"img":"015.jpg"},{"cat":"Crepes","name":"Belgium Crepe","ar":null,"price":39,"kcal":487,"desc":null,"img":"016.jpg"},{"cat":"Crepes","name":"Lotus Crepe","ar":null,"price":39,"kcal":522,"desc":null,"img":"017.jpg"},{"cat":"Crepes","name":"Digestive Crepe","ar":null,"price":39,"kcal":535,"desc":null,"img":"018.jpg"},{"cat":"Crepes","name":"Fettuccini Crepe","ar":null,"price":45,"kcal":487,"desc":null,"img":"019.jpg"},{"cat":"Waffles","name":"Classic Waffle","ar":null,"price":27,"kcal":751,"desc":null,"img":"020.jpg"},{"cat":"Waffles","name":"Strawberry Waffles","ar":null,"price":39,"kcal":746,"desc":null,"img":"021.jpg"},{"cat":"Waffles","name":"Mix Fruit Waffle","ar":null,"price":45,"kcal":954,"desc":null,"img":"022.jpg"},{"cat":"Waffles","name":"Mix Berry Waffle","ar":null,"price":45,"kcal":697,"desc":null,"img":"023.jpg"},{"cat":"Waffles","name":"Belgium Waffle","ar":null,"price":45,"kcal":969,"desc":null,"img":"024.jpg"},{"cat":"Waffles","name":"Lotus Waffle","ar":null,"price":45,"kcal":961,"desc":null,"img":"025.jpg"},{"cat":"Waffles","name":"Pistachio Waffle","ar":null,"price":45,"kcal":916,"desc":null,"img":"026.jpg"},{"cat":"Waffles","name":"Arch Waffle","ar":null,"price":49,"kcal":811,"desc":null,"img":"027.jpg"},{"cat":"Eggs & Breakfast","name":"Mushroom Cheese Omelette","ar":null,"price":29,"kcal":620,"desc":null,"img":"028.jpg"},{"cat":"Eggs & Breakfast","name":"Mixed Veg Omelette","ar":null,"price":29,"kcal":625,"desc":null,"img":"029.jpg"},{"cat":"Eggs & Breakfast","name":"Cheese Omelette","ar":null,"price":29,"kcal":755,"desc":null,"img":"030.jpg"},{"cat":"Eggs & Breakfast","name":"White Omelette","ar":null,"price":29,"kcal":436,"desc":null,"img":"031.jpg"},{"cat":"Eggs & Breakfast","name":"Poached Egg","ar":null,"price":29,"kcal":483,"desc":null,"img":"032.jpg"},{"cat":"Eggs & Breakfast","name":"Fried Egg","ar":null,"price":29,"kcal":498,"desc":null,"img":"033.jpg"},{"cat":"Eggs & Breakfast","name":"Egg Benedict","ar":null,"price":29,"kcal":608,"desc":null,"img":"034.jpg"},{"cat":"Eggs & Breakfast","name":"Egg Florentine","ar":null,"price":29,"kcal":504,"desc":null,"img":"035.jpg"},{"cat":"Eggs & Breakfast","name":"Crepe Omelette","ar":null,"price":29,"kcal":957,"desc":null,"img":"036.jpg"},{"cat":"Eggs & Breakfast","name":"Egg Roll Wrap","ar":null,"price":29,"kcal":627,"desc":null,"img":"037.jpg"},{"cat":"Eggs & Breakfast","name":"Fatayer Zaatar","ar":null,"price":18,"kcal":629,"desc":null,"img":"038.jpg"},{"cat":"Eggs & Breakfast","name":"Three Kinds of Cheese","ar":null,"price":25,"kcal":420,"desc":null,"img":"039.jpg"},{"cat":"Eggs & Breakfast","name":"Labnah Zaatar","ar":null,"price":18,"kcal":466,"desc":null,"img":"040.jpg"},{"cat":"Eggs & Breakfast","name":"Labnah Honey","ar":null,"price":21,"kcal":523,"desc":null,"img":"041.jpg"},{"cat":"Arabic Breakfast","name":"Kibdah Saj (Liver)","ar":"كبدة صاج","price":24,"kcal":null,"desc":null,"img":"042.jpg"},{"cat":"Arabic Breakfast","name":"Fattah Hummus Shami","ar":"فتة حمص شامية","price":24,"kcal":null,"desc":null,"img":"043.jpg"},{"cat":"Arabic Breakfast","name":"Turkish Shakshuka","ar":"شكشوكة تركية","price":22,"kcal":null,"desc":null,"img":"044.jpg"},{"cat":"Arabic Breakfast","name":"Halloumi Tagine","ar":"طاجن حلومي","price":18,"kcal":null,"desc":null,"img":"045.jpg"},{"cat":"Arabic Breakfast","name":"Foul","ar":"فول","price":18,"kcal":null,"desc":null,"img":"046.jpg"},{"cat":"Arabic Breakfast","name":"Eggplant Fattah","ar":"فتة باذنجان","price":24,"kcal":null,"desc":null,"img":"047.jpg"},{"cat":"Arabic Breakfast","name":"Foul Shami","ar":"فول شامي","price":16,"kcal":null,"desc":null,"img":"048.jpg"},{"cat":"Arabic Breakfast","name":"Hummus with Liver","ar":"حمص بالكبدة","price":22,"kcal":null,"desc":null,"img":"049.jpg"},{"cat":"Arabic Breakfast","name":"Breakfast for 1","ar":"فطور لشخص","price":49,"kcal":null,"desc":"1 main dish of your choice, green salad, feta cheese, labneh, olives, pot of tea","img":"050.jpg"},{"cat":"Arabic Breakfast","name":"Breakfast for 2","ar":"فطور لشخصين","price":69,"kcal":null,"desc":"2 main dishes of your choice, green salad, feta cheese, labneh, olives, pot of tea","img":"051.jpg"},{"cat":"Arabic Breakfast","name":"Breakfast for 3","ar":"فطور لـ 3 أشخاص","price":89,"kcal":null,"desc":"3 main dishes of your choice, green salad, feta cheese, labneh, olives, pot of tea","img":"052.jpg"},{"cat":"Arabic Breakfast","name":"Friends Breakfast","ar":"فطور الأصدقاء","price":129,"kcal":null,"desc":"7 main dishes of your choice, green salad, feta cheese, labneh, olives, pot of tea","img":"053.jpg"},{"cat":"Appetizers","name":"French Fries","ar":null,"price":25,"kcal":236,"desc":null,"img":"054.jpg"},{"cat":"Appetizers","name":"Cheesy Potato Wedges","ar":null,"price":35,"kcal":260,"desc":null,"img":"055.jpg"},{"cat":"Appetizers","name":"Cheesy Chicken Croquettes","ar":null,"price":39,"kcal":413,"desc":null,"img":"056.jpg"},{"cat":"Appetizers","name":"Dynamite Shrimp","ar":null,"price":49,"kcal":429,"desc":null,"img":"057.jpg"},{"cat":"Appetizers","name":"Dynamite Chicken","ar":null,"price":39,"kcal":400,"desc":null,"img":"058.jpg"},{"cat":"Appetizers","name":"Mozzarella Sticks","ar":null,"price":35,"kcal":419,"desc":null,"img":"059.jpg"},{"cat":"Appetizers","name":"Chicken Nuggets","ar":null,"price":29,"kcal":466,"desc":null,"img":"060.jpg"},{"cat":"Appetizers","name":"Chicken Strips with Fries","ar":null,"price":39,"kcal":550,"desc":null,"img":"061.jpg"},{"cat":"Appetizers","name":"Hot Wings","ar":null,"price":35,"kcal":218,"desc":null,"img":"062.jpg"},{"cat":"Salads","name":"Chicken Caesar Salad","ar":null,"price":35,"kcal":253,"desc":null,"img":"063.jpg"},{"cat":"Salads","name":"Cilantro Salad","ar":null,"price":35,"kcal":346,"desc":null,"img":"064.jpg"},{"cat":"Salads","name":"Rocca Berry Salad","ar":null,"price":35,"kcal":137,"desc":null,"img":"065.jpg"},{"cat":"Salads","name":"Greek Salad","ar":null,"price":35,"kcal":121,"desc":null,"img":"066.jpg"},{"cat":"Salads","name":"Halloumi Avocado Salad","ar":null,"price":35,"kcal":530,"desc":null,"img":"067.jpg"},{"cat":"Salads","name":"Yogurt Fattoush","ar":null,"price":35,"kcal":131,"desc":null,"img":"068.jpg"},{"cat":"Pizza","name":"Margherita Pizza","ar":null,"price":35,"kcal":648,"desc":null,"img":"069.jpg"},{"cat":"Pizza","name":"Pepperoni Pizza","ar":null,"price":39,"kcal":901,"desc":null,"img":"070.jpg"},{"cat":"Pizza","name":"Veggie Pizza","ar":null,"price":39,"kcal":690,"desc":null,"img":"071.jpg"},{"cat":"Pizza","name":"BBQ Pizza","ar":null,"price":39,"kcal":830,"desc":null,"img":"072.jpg"},{"cat":"Pizza","name":"Dynamite Pizza","ar":null,"price":39,"kcal":810,"desc":null,"img":"073.jpg"},{"cat":"Pizza","name":"Ranch Pizza","ar":null,"price":39,"kcal":803,"desc":null,"img":"074.jpg"},{"cat":"Pizza","name":"Flag Pesto Pizza","ar":null,"price":39,"kcal":986,"desc":null,"img":"075.jpg"},{"cat":"Sandwiches","name":"Chicken Avocado Sandwich","ar":null,"price":39,"kcal":758,"desc":null,"img":"076.jpg"},{"cat":"Sandwiches","name":"Cheesy Chicken Sandwich","ar":null,"price":39,"kcal":716,"desc":null,"img":"077.jpg"},{"cat":"Sandwiches","name":"Beef Steak Sandwich","ar":null,"price":45,"kcal":767,"desc":null,"img":"078.jpg"},{"cat":"Sandwiches","name":"Chicken Shawarma Crepe","ar":null,"price":39,"kcal":650,"desc":null,"img":"079.jpg"},{"cat":"Sandwiches","name":"Halloumi Sandwich","ar":null,"price":35,"kcal":794,"desc":null,"img":"080.jpg"},{"cat":"Burgers","name":"Mini Burger Chicken","ar":null,"price":39,"kcal":391,"desc":null,"img":"081.jpg"},{"cat":"Burgers","name":"Mini Burger Beef","ar":null,"price":39,"kcal":413,"desc":null,"img":"082.jpg"},{"cat":"Burgers","name":"Mixed Slider Burger","ar":null,"price":39,"kcal":503,"desc":null,"img":"083.jpg"},{"cat":"Burgers","name":"Beef Burger","ar":null,"price":39,"kcal":751,"desc":null,"img":"084.jpg"},{"cat":"Burgers","name":"Mushroom Beef Burger","ar":null,"price":45,"kcal":811,"desc":null,"img":"085.jpg"},{"cat":"Burgers","name":"Fried Chicken Burger","ar":null,"price":39,"kcal":662,"desc":null,"img":"086.jpg"},{"cat":"Burgers","name":"Chicken Burger","ar":null,"price":39,"kcal":743,"desc":null,"img":"087.jpg"},{"cat":"Pasta","name":"Mixed Vegetable Pasta","ar":null,"price":35,"kcal":749,"desc":null,"img":"088.jpg"},{"cat":"Pasta","name":"Chicken Florentine Pesto","ar":null,"price":39,"kcal":989,"desc":null,"img":"089.jpg"},{"cat":"Pasta","name":"Arrabbiata Chicken","ar":null,"price":39,"kcal":561,"desc":null,"img":"090.jpg"},{"cat":"Pasta","name":"Shrimp alla Funghi","ar":null,"price":45,"kcal":573,"desc":null,"img":"091.jpg"},{"cat":"Main Course","name":"Biryani Shrimp","ar":null,"price":55,"kcal":499,"desc":null,"img":"092.jpg"},{"cat":"Main Course","name":"Biryani Chicken","ar":null,"price":49,"kcal":558,"desc":null,"img":"093.jpg"},{"cat":"Main Course","name":"Butter Chicken","ar":null,"price":55,"kcal":663,"desc":null,"img":"094.jpg"},{"cat":"Main Course","name":"Chicken Teriyaki","ar":null,"price":49,"kcal":335,"desc":null,"img":"095.jpg"},{"cat":"Main Course","name":"Beef Teppanyaki","ar":null,"price":55,"kcal":498,"desc":null,"img":"096.jpg"},{"cat":"Main Course","name":"BBQ Chicken","ar":null,"price":55,"kcal":394,"desc":null,"img":"097.jpg"},{"cat":"Main Course","name":"Pollo Funghi","ar":null,"price":49,"kcal":421,"desc":null,"img":"098.jpg"},{"cat":"Main Course","name":"Beef Steak","ar":null,"price":89,"kcal":695,"desc":null,"img":"099.jpg"},{"cat":"Main Course","name":"Grilled Salmon with Lemon Butter Sauce","ar":null,"price":85,"kcal":492,"desc":null,"img":"100.jpg"},{"cat":"Hot Drinks","name":"Arabic Coffee","ar":null,"price":27,"kcal":11,"desc":null,"img":"101.jpg"},{"cat":"Hot Drinks","name":"Turkish Coffee","ar":null,"price":18,"kcal":32,"desc":null,"img":"102.jpg"},{"cat":"Hot Drinks","name":"Espresso","ar":null,"price":16,"kcal":1,"desc":null,"img":"103.jpg"},{"cat":"Hot Drinks","name":"Italian Cappuccino","ar":null,"price":24,"kcal":73,"desc":null,"img":"104.jpg"},{"cat":"Hot Drinks","name":"French Latte","ar":null,"price":21,"kcal":136,"desc":null,"img":"105.jpg"},{"cat":"Hot Drinks","name":"American Brewed Coffee","ar":null,"price":18,"kcal":1,"desc":null,"img":"106.jpg"},{"cat":"Hot Drinks","name":"Caramel Macchiato","ar":null,"price":23,"kcal":140,"desc":null,"img":"107.jpg"},{"cat":"Hot Drinks","name":"Cafe Mocha","ar":null,"price":21,"kcal":200,"desc":null,"img":"108.jpg"},{"cat":"Hot Drinks","name":"Rose Latte","ar":null,"price":26,"kcal":168,"desc":null,"img":"109.jpg"},{"cat":"Hot Drinks","name":"Flat White","ar":null,"price":23,"kcal":110,"desc":null,"img":"110.jpg"},{"cat":"Hot Drinks","name":"Spanish Latte (Hot)","ar":null,"price":22,"kcal":249,"desc":null,"img":"111.jpg"},{"cat":"Hot Drinks","name":"Affogato","ar":null,"price":22,"kcal":109,"desc":null,"img":"112.jpg"},{"cat":"Hot Drinks","name":"Café Cortado","ar":null,"price":21,"kcal":30,"desc":null,"img":"113.jpg"},{"cat":"Hot Drinks","name":"Cinnamon Latte","ar":null,"price":22,"kcal":155,"desc":null,"img":"114.jpg"},{"cat":"Hot Drinks","name":"Hario V60","ar":null,"price":22,"kcal":11,"desc":null,"img":"115.jpg"},{"cat":"Iced Beverages","name":"Cold Coffee","ar":null,"price":23,"kcal":501,"desc":null,"img":"116.jpg"},{"cat":"Iced Beverages","name":"Americano on Ice","ar":null,"price":20,"kcal":11,"desc":null,"img":"117.jpg"},{"cat":"Iced Beverages","name":"Mocha on Ice","ar":null,"price":23,"kcal":200,"desc":null,"img":"118.jpg"},{"cat":"Iced Beverages","name":"Cappuccino on Ice","ar":null,"price":24,"kcal":37,"desc":null,"img":"119.jpg"},{"cat":"Iced Beverages","name":"French Latte on Ice","ar":null,"price":23,"kcal":136,"desc":null,"img":"120.jpg"},{"cat":"Iced Beverages","name":"Chocolate on Ice","ar":null,"price":23,"kcal":151,"desc":null,"img":"121.jpg"},{"cat":"Iced Beverages","name":"Caramel Macchiato on Ice","ar":null,"price":23,"kcal":140,"desc":null,"img":"122.jpg"},{"cat":"Iced Beverages","name":"Spanish Latte (Iced)","ar":null,"price":23,"kcal":249,"desc":null,"img":"123.jpg"},{"cat":"Iced Beverages","name":"Rose Latte on Ice","ar":null,"price":22,"kcal":168,"desc":null,"img":"124.jpg"},{"cat":"Iced Beverages","name":"Blue Sky","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":241,"desc":null,"img":"125.jpg"},{"cat":"Iced Beverages","name":"Titoos on Ice","ar":null,"price":25,"kcal":218,"desc":null,"img":"126.jpg"},{"cat":"Iced Beverages","name":"Funky Smoothies","ar":null,"price":22,"kcal":454,"desc":null,"img":"127.jpg"},{"cat":"Iced Beverages","name":"Berry Yogurt Smoothies","ar":null,"price":22,"kcal":198,"desc":null,"img":"128.jpg"},{"cat":"Milkshakes","name":"Vanilla Milkshake","ar":null,"price":24,"kcal":510,"desc":null,"img":"129.jpg"},{"cat":"Milkshakes","name":"Chocolate Milkshake","ar":null,"price":24,"kcal":531,"desc":null,"img":"130.jpg"},{"cat":"Milkshakes","name":"Strawberry Milkshake","ar":null,"price":24,"kcal":509,"desc":null,"img":"131.jpg"},{"cat":"Milkshakes","name":"Pistachio Milkshake","ar":null,"price":29,"kcal":560,"desc":null,"img":"132.jpg"},{"cat":"Milkshakes","name":"Oreo Milkshake","ar":null,"price":24,"kcal":540,"desc":null,"img":"133.jpg"},{"cat":"Milkshakes","name":"Lotus Milkshake","ar":null,"price":26,"kcal":587,"desc":null,"img":"134.jpg"},{"cat":"Milkshakes","name":"Kinder Milkshake","ar":null,"price":26,"kcal":520,"desc":null,"img":"135.jpg"},{"cat":"Milkshakes","name":"Mix Berry Milkshake","ar":null,"price":26,"kcal":455,"desc":null,"img":"136.jpg"},{"cat":"Fresh Juices","name":"Orange Juice","ar":null,"price":21,"kcal":115,"desc":null,"img":"137.jpg"},{"cat":"Fresh Juices","name":"Lemon Mint Juice","ar":null,"price":21,"kcal":92,"desc":null,"img":"138.jpg"},{"cat":"Fresh Juices","name":"Watermelon Juice","ar":null,"price":21,"kcal":70,"desc":null,"img":"139.jpg"},{"cat":"Fresh Juices","name":"Carrot Juice","ar":null,"price":21,"kcal":120,"desc":null,"img":"140.jpg"},{"cat":"Mojito","name":"Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":150,"desc":null,"img":"141.jpg"},{"cat":"Mojito","name":"Summer Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":150,"desc":null,"img":"142.jpg"},{"cat":"Mojito","name":"Peach Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":150,"desc":null,"img":"143.jpg"},{"cat":"Mojito","name":"Classic Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":118,"desc":null,"img":"144.jpg"},{"cat":"Mojito","name":"Blueberry Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":150,"desc":null,"img":"145.jpg"},{"cat":"Mojito","name":"Pomegranate Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":148,"desc":null,"img":"146.jpg"},{"cat":"Mojito","name":"Raspberry Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":152,"desc":null,"img":"147.jpg"},{"cat":"Mojito","name":"Cherry Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":97,"desc":null,"img":"148.jpg"},{"cat":"Mojito","name":"Strawberry Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":152,"desc":null,"img":"149.jpg"},{"cat":"Mojito","name":"Kiwi Mojito","ar":null,"price":"7UP SR 21 · Code Red SR 24","kcal":137,"desc":null,"img":"150.jpg"},{"cat":"Mojito","name":"Mixberry Mojito","ar":null,"price":"7UP SR 22 · Code Red SR 29","kcal":152,"desc":null,"img":"151.jpg"},{"cat":"Mojito","name":"Special Mojito","ar":null,"price":"7UP SR 22 · Code Red SR 29","kcal":137,"desc":null,"img":"152.jpg"},{"cat":"Tea","name":"Milk Tea","ar":null,"price":10,"kcal":43,"desc":null,"img":"153.jpg"},{"cat":"Tea","name":"Green Tea","ar":null,"price":8,"kcal":0,"desc":null,"img":"154.jpg"},{"cat":"Tea","name":"Black Tea","ar":null,"price":8,"kcal":0,"desc":null,"img":"155.jpg"},{"cat":"Tea","name":"Peach Iced Tea","ar":null,"price":23,"kcal":167,"desc":null,"img":"156.jpg"},{"cat":"Tea","name":"Lemon Iced Tea","ar":null,"price":23,"kcal":166,"desc":null,"img":"157.jpg"},{"cat":"Tea","name":"Strawberry Iced Tea","ar":null,"price":23,"kcal":168,"desc":null,"img":"158.jpg"},{"cat":"Soft Drinks","name":"Italian Water 250 ml","ar":null,"price":6,"kcal":0,"desc":null,"img":null},{"cat":"Soft Drinks","name":"Pepsi","ar":null,"price":6,"kcal":150,"desc":null,"img":null},{"cat":"Soft Drinks","name":"Diet Pepsi","ar":null,"price":6,"kcal":1,"desc":null,"img":null},{"cat":"Soft Drinks","name":"7 Up","ar":null,"price":7,"kcal":145,"desc":null,"img":null},{"cat":"Soft Drinks","name":"Code Red","ar":null,"price":10,"kcal":110,"desc":null,"img":null},{"cat":"Ice Cream","name":"Vanilla Ice Cream","ar":null,"price":23,"kcal":257,"desc":null,"img":"159.jpg"},{"cat":"Ice Cream","name":"Chocolate Ice Cream","ar":null,"price":23,"kcal":340,"desc":null,"img":"160.jpg"},{"cat":"Ice Cream","name":"Strawberry Ice Cream","ar":null,"price":23,"kcal":298,"desc":null,"img":"161.jpg"},{"cat":"Ice Cream","name":"Tricolour Ice Cream","ar":null,"price":23,"kcal":298,"desc":null,"img":"162.jpg"}]};
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let state = {group:0, cat:null, q:''};
+const byCat = {}; MENU.items.forEach((it,i)=>{it.id=i;(byCat[it.cat]=byCat[it.cat]||[]).push(it)});
+const groupOf = c => MENU.groups.find(g=>g.cats.includes(c));
+
+function priceHtml(p){
+  if(typeof p==='number') return `<span class="price">SR ${p}</span>`;
+  return `<span class="price multi">${esc(p).replace(' · ','<br>')}</span>`;
+}
+function itemCard(it){
+  return `<button class="item" data-item="${it.id}" aria-label="${esc(it.name)}">
+    <div class="ph">${it.img?`<img src="${it.img}" alt="${esc(it.name)}" loading="lazy">`:'<span class="noimg">🥤</span>'}</div>
+    <div class="txt"><div class="nm">${esc(it.name)}${it.ar?`<span class="ar">${esc(it.ar)}</span>`:''}</div>
+    <div class="row">${priceHtml(it.price)}${it.kcal!=null?`<span class="kcal">${it.kcal} kcal</span>`:''}</div></div></button>`;
+}
+function searchBox(){
+  return `<div class="search"><input id="q" type="search" placeholder="Search the menu… e.g. lotus, shrimp, latte" value="${esc(state.q)}" autocomplete="off">
+  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg></div>`;
+}
+function renderHome(){
+  const g = MENU.groups[state.group];
+  const tabs = MENU.groups.map((gr,i)=>`<button class="tab" role="tab" aria-selected="${i===state.group}" data-group="${i}">${gr.icon} ${esc(gr.name)} <span class="n">${gr.cats.reduce((a,c)=>a+byCat[c].length,0)}</span></button>`).join('');
+  const cats = g.cats.map(c=>{const items=byCat[c];const cover=items.find(i=>i.img);
+    return `<button class="cat" data-cat="${esc(c)}">${cover?`<img src="${cover.img}" alt="">`:''}<div class="lbl">${esc(c)}<small>${items.length} items</small></div></button>`}).join('');
+  app.innerHTML = searchBox()+`<div class="tabs" role="tablist">${tabs}</div><h2 class="sec">${esc(g.name)}</h2><div class="cats">${cats}</div>
+  <footer><div class="lg">Arch Restaurant &amp; Cafe</div>Prices in Saudi Riyals · Calories are approximate</footer>`;
+}
+function renderCat(){
+  const items = byCat[state.cat]; const g=groupOf(state.cat);
+  app.innerHTML = `<div class="topbar"><button class="back" data-back aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <h2>${esc(state.cat)}<small>${esc(g.name)} · ${items.length} items</small></h2></div><div class="items">${items.map(itemCard).join('')}</div>`;
+}
+function renderSearch(){
+  const q=state.q.trim().toLowerCase();
+  const hits = MENU.items.filter(i=>i.name.toLowerCase().includes(q)||(i.ar||'').includes(q)||i.cat.toLowerCase().includes(q));
+  app.innerHTML = searchBox()+`<h2 class="sec">${hits.length} result${hits.length===1?'':'s'} for “${esc(state.q)}”</h2>`+
+   (hits.length?`<div class="items">${hits.map(itemCard).join('')}</div>`:`<div class="empty">Nothing matched. Try another word, or clear the search to browse by category.</div>`);
+  const inp=$('#q'); inp.focus(); inp.setSelectionRange(inp.value.length,inp.value.length);
+}
+function render(){
+  if(state.cat) renderCat(); else if(state.q.trim()) renderSearch(); else renderHome();
+  window.scrollTo({top:0});
+}
+function openItem(it){
+  const old=$('.sheet-bg'); if(old) old.remove();
+  const d=document.createElement('div'); d.className='sheet-bg';
+  d.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(it.name)}"><div class="phwrap"><div class="ph">${it.img?`<img src="${it.img}" alt="${esc(it.name)}">`:'<span class="noimg" style="font-size:80px">🥤</span>'}</div>
+   <button class="close" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg></button></div>
+   <div class="body"><h3>${esc(it.name)}</h3>${it.ar?`<p class="ar">${esc(it.ar)}</p>`:''}
+   <div class="meta">${typeof it.price==='number'?`<span class="chip p">SR ${it.price}</span>`:esc(it.price).split(' · ').map(p=>`<span class="chip p">${p}</span>`).join('')}${it.kcal!=null?`<span class="chip k">${it.kcal} kcal</span>`:''}</div>
+   ${it.desc?`<p class="desc">${esc(it.desc)}</p>`:''}<p class="catlink">${esc(it.cat)}</p></div></div>`;
+  document.body.appendChild(d); document.body.style.overflow='hidden';
+  d.querySelector('[data-close]').focus();
+}
+function closeSheet(){const s=$('.sheet-bg'); if(s){s.remove();document.body.style.overflow='';}}
+document.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.closest('[data-close]')||(t.classList&&t.classList.contains('sheet-bg'))){closeSheet();return;}
+  const it=t.closest('[data-item]'); if(it){openItem(MENU.items[+it.dataset.item]);return;}
+  const c=t.closest('[data-cat]'); if(c){state.cat=c.dataset.cat;state.q='';render();return;}
+  const b=t.closest('[data-back]'); if(b){state.cat=null;render();return;}
+  const g=t.closest('[data-group]'); if(g){state.group=+g.dataset.group;render();return;}
+});
+document.addEventListener('input',e=>{ if(e.target.id==='q'){state.q=e.target.value; state.cat=null; if(!state.q.trim()){render();} else renderSearch();} });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('.sheet-bg')) closeSheet(); else if(state.cat){state.cat=null;render();} } });
+render();
+</script>
+
+</body>
+</html>
