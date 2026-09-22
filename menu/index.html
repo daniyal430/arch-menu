@@ -68,6 +68,18 @@
   .tot{display:flex;justify-content:space-between;font-size:18px;font-weight:800}
   .acts{display:flex;gap:10px}
   .acts .clr{flex:1;border:2px solid #E7D6BE;background:#fff;color:#4A1513;border-radius:14px;padding:14px;font-weight:700;font-size:15px;cursor:pointer}
+  .dwrap{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:18px}
+  .dcard{position:relative;width:100%;max-width:420px;background:#FBF5EC;border-radius:22px;overflow:hidden;box-shadow:0 20px 60px rgba(74,21,19,.4);display:flex;flex-direction:column}
+  .dcard .pic{height:260px;background:#F3E7D6 center/contain no-repeat}
+  .dcard .bd{padding:18px 20px 22px;display:flex;flex-direction:column;gap:10px}
+  .dcard h3{margin:0;font-size:24px;font-weight:800;line-height:1.15}
+  .dcard .meta{display:flex;align-items:baseline;gap:12px}
+  .dcard .meta .p{font-size:22px;font-weight:800;color:#7A1F1C}
+  .dcard .meta .k{font-size:13px;font-weight:700;color:#9A8570}
+  .dcard .sec2{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#B0451F}
+  .dcard .go{margin-top:4px;display:flex;gap:10px;align-items:center}
+  .dcard .go .big{flex:1;border:0;background:#B0451F;color:#fff;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer}
+  .dclose{position:absolute;top:12px;right:12px;width:38px;height:38px;border:0;border-radius:50%;background:rgba(251,245,236,.92);color:#4A1513;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
   .acts .cta{flex:2;text-decoration:none;background:#B0451F;color:#fff;border-radius:14px;padding:14px;font-weight:800;font-size:15px;text-align:center}
 </style>
 </head>
@@ -77,11 +89,14 @@
 <script type="module">
 import { CATEGORIES } from './menu-data.js';
 
-const WHATSAPP = '966506759681';
+const WHATSAPP = '966554312474';
 const q = new URLSearchParams(location.search);
-const TABLE = (q.get('table') || q.get('t') || '').trim().slice(0, 8);
+const _t = (q.get('table') || '').trim();
+const TABLE = /^[A-Za-z0-9-]{1,4}$/.test(_t) ? _t : '';
 
-let cat = null, openSection = null, cartOpen = false;
+let cat = null, openSection = null, cartOpen = false, dish = null;
+const INDEX = {};
+CATEGORIES.forEach(c => c.sections.forEach(s => s.items.forEach(it => { INDEX[it.name] = { ...it, sec: s.title }; })));
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem('archsite-cart') || '{}'); } catch (e) {}
 const save = () => { try { localStorage.setItem('archsite-cart', JSON.stringify(cart)); } catch (e) {} };
@@ -130,7 +145,7 @@ function categoryView() {
     const thumb = s.items[0]?.img ? `background-image:url('../${s.items[0].img}')` : '';
     const items = !open ? '' : s.items.map(it => {
       const qty = cart[it.name]?.qty || 0;
-      return `<div class="item ${qty ? 'on' : ''}">
+      return `<div class="item ${qty ? 'on' : ''}" data-dish="${esc(it.name)}" style="cursor:pointer">
         ${it.img ? `<div class="im" style="background-image:url('../${it.img}')"></div>` : ''}
         <div class="nm"><b>${esc(it.name)}</b><span>${it.kcal} kcal</span></div>
         <span class="price">SR ${it.price}</span>
@@ -173,12 +188,30 @@ function sheet() {
   </div></div>`;
 }
 
+function dishView() {
+  if (!dish || !INDEX[dish]) return '';
+  const it = INDEX[dish];
+  const qty = cart[it.name]?.qty || 0;
+  const step = `<div class="step"><button class="minus" data-d="-1" data-n="${esc(it.name)}" data-p="${it.price}">−</button><b>${qty}</b><button class="plus" data-d="1" data-n="${esc(it.name)}" data-p="${it.price}">+</button></div>`;
+  return `<div class="scrim" data-dclose="1"></div><div class="dwrap"><div class="dcard">
+    <button class="dclose" data-dclose="1">×</button>
+    ${it.img ? `<div class="pic" style="background-image:url('../${it.img}')"></div>` : ''}
+    <div class="bd">
+      <span class="sec2">${esc(it.sec)}</span>
+      <h3>${esc(it.name)}</h3>
+      <div class="meta"><span class="p">SR ${it.price}</span><span class="k">${it.kcal} kcal</span></div>
+      <div class="go">${qty ? step + '<span style="font-weight:700;color:#8A7259">In your selection</span>'
+        : `<button class="big" data-d="1" data-n="${esc(it.name)}" data-p="${it.price}">Add to selection</button>`}</div>
+    </div>
+  </div></div>`;
+}
+
 function render() {
-  document.getElementById('app').innerHTML = header() + (cat ? categoryView() : home()) + bar() + sheet();
+  document.getElementById('app').innerHTML = header() + (cat ? categoryView() : home()) + bar() + sheet() + dishView();
 }
 
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-cat],[data-home],[data-sec],[data-d],[data-open],[data-close],[data-clear]');
+  const el = e.target.closest('[data-cat],[data-home],[data-sec],[data-d],[data-open],[data-close],[data-clear],[data-dish],[data-dclose]');
   if (!el) return;
   if (el.dataset.cat) { cat = el.dataset.cat; openSection = null; scrollTo(0, 0); }
   else if (el.dataset.home) { cat = null; openSection = null; scrollTo(0, 0); }
@@ -187,6 +220,8 @@ document.addEventListener('click', e => {
   else if (el.dataset.open) { cartOpen = true; }
   else if (el.dataset.close) { cartOpen = false; }
   else if (el.dataset.clear) { cart = {}; save(); cartOpen = false; }
+  else if (el.dataset.dclose) { dish = null; }
+  else if (el.dataset.dish) { dish = el.dataset.dish; }
   render();
 });
 
