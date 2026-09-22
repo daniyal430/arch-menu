@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Arch Restaurant &amp; Cafe — Menu</title>
+<meta name="theme-color" content="#7A1F1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#F3E7D6;font-family:'Nunito',Helvetica,sans-serif;color:#4A1513;-webkit-font-smoothing:antialiased}
+  a{color:#7A1F1C}a:hover{color:#4A1513}
+  button{font-family:inherit}
+  .app{min-height:100vh;display:flex;flex-direction:column;max-width:720px;margin:0 auto;background:#FBF5EC;box-shadow:0 0 60px rgba(122,31,28,.14)}
+  .hdr{background:#7A1F1C;padding:26px 24px 22px;display:flex;flex-direction:column;align-items:center;gap:8px;color:#F6E7CF;text-align:center}
+  .hdr img{width:112px;height:112px;border-radius:50%;box-shadow:0 6px 20px rgba(0,0,0,.28)}
+  .tablebadge{background:#C8801E;color:#3A1008;border-radius:999px;padding:6px 16px;font-size:14px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
+  .grid{padding:22px 20px 120px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+  .cat{border:0;cursor:pointer;background:#fff;border-radius:18px;padding:0;text-align:left;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 2px 10px rgba(122,31,28,.12);border-bottom:4px solid #B0451F}
+  .cat .ph{height:120px;background:#F3E7D6 center/contain no-repeat}
+  .cat .bd{padding:14px 18px 18px;display:flex;flex-direction:column;gap:5px}
+  .cat h2{font-size:22px;font-weight:800;margin:0}
+  .cat .sub{font-size:13px;color:#8A7259;font-weight:600}
+  .cat .more{font-size:12px;color:#7A1F1C;font-weight:700;margin-top:4px}
+  .tabs{position:sticky;top:0;z-index:5;background:#FBF5EC;border-bottom:1px solid #E7D6BE;padding:10px 16px;display:flex;gap:8px;overflow-x:auto}
+  .pill{flex:none;border:0;border-radius:999px;padding:9px 14px;font-weight:700;font-size:14px;white-space:nowrap;cursor:pointer;background:#F3E7D6;color:#4A1513}
+  .pill.on{background:#B0451F;color:#fff}
+  .pill.back{background:#fff;box-shadow:0 1px 4px rgba(122,31,28,.16)}
+  .list{padding:8px 16px 130px;display:flex;flex-direction:column;gap:20px}
+  .sec{display:flex;flex-direction:column;gap:10px}
+  .sechead{width:100%;border:0;cursor:pointer;background:#fff;color:#4A1513;border-radius:16px;padding:0;display:flex;align-items:center;gap:14px;overflow:hidden;box-shadow:0 1px 6px rgba(122,31,28,.12);text-align:left}
+  .sechead.on{background:#B0451F;color:#fff}
+  .sechead .th{width:64px;height:64px;flex:none;background:rgba(255,255,255,.35) center/cover no-repeat}
+  .sechead .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding:10px 0}
+  .sechead .tx b{font-size:17px;font-weight:800;letter-spacing:.3px}
+  .sechead .tx span{font-size:12px;font-weight:700;opacity:.75}
+  .sechead .ca{font-size:20px;font-weight:700;padding-right:18px;transition:transform .2s}
+  .sechead.on .ca{transform:rotate(180deg)}
+  .item{background:#fff;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(122,31,28,.10);border:2px solid #fff}
+  .item.on{border-color:#B0451F}
+  .item .im{width:76px;height:76px;flex:none;border-radius:12px;background:#F7EFE2 center/contain no-repeat}
+  .item .nm{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .item .nm b{font-size:16px;font-weight:700}
+  .item .nm span{font-size:12px;color:#9A8570;font-weight:600}
+  .price{font-size:16px;font-weight:800;color:#7A1F1C;white-space:nowrap}
+  .add{width:44px;height:44px;border-radius:50%;border:0;background:#B0451F;color:#fff;font-size:24px;font-weight:700;cursor:pointer;box-shadow:0 3px 8px rgba(176,69,31,.35)}
+  .step{display:flex;align-items:center;gap:4px;background:#F3E7D6;border-radius:999px;padding:3px}
+  .step button{width:34px;height:34px;border-radius:50%;border:0;font-size:18px;font-weight:700;cursor:pointer}
+  .step .minus{background:#fff;color:#4A1513}
+  .step .plus{background:#B0451F;color:#fff}
+  .step b{min-width:22px;text-align:center;font-weight:800;font-size:15px}
+  .bar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:0 12px 14px;pointer-events:none;z-index:20}
+  .bar button{pointer-events:auto;width:100%;max-width:696px;border:0;cursor:pointer;background:#4A1513;color:#fff;border-radius:18px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 10px 30px rgba(74,21,19,.32);font-size:16px;font-weight:700}
+  .bar .l{display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .bar .n{background:#B0451F;border-radius:999px;padding:3px 10px;font-size:14px}
+  .scrim{position:fixed;inset:0;background:rgba(74,21,19,.5);z-index:30}
+  .sheetwrap{position:fixed;left:0;right:0;bottom:0;z-index:31;display:flex;justify-content:center}
+  .sheet{width:100%;max-width:720px;background:#FBF5EC;border-radius:24px 24px 0 0;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.2)}
+  .sheet .top{padding:18px 20px 10px;display:flex;align-items:center;justify-content:space-between}
+  .sheet .top .lt{display:flex;align-items:center;gap:10px}
+  .sheet .top b{font-size:20px;font-weight:800}
+  .sheet .top .tb{background:#7A1F1C;color:#F6E7CF;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:800;white-space:nowrap}
+  .sheet .x{border:0;background:#F3E7D6;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;color:#4A1513}
+  .sheet .rows{overflow-y:auto;padding:0 20px;display:flex;flex-direction:column;gap:8px}
+  .row{background:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+  .foot{padding:16px 20px 22px;display:flex;flex-direction:column;gap:12px;border-top:1px solid #E7D6BE;margin-top:10px}
+  .tot{display:flex;justify-content:space-between;font-size:18px;font-weight:800}
+  .acts{display:flex;gap:10px}
+  .acts .clr{flex:1;border:2px solid #E7D6BE;background:#fff;color:#4A1513;border-radius:14px;padding:14px;font-weight:700;font-size:15px;cursor:pointer}
+  .acts .cta{flex:2;text-decoration:none;background:#B0451F;color:#fff;border-radius:14px;padding:14px;font-weight:800;font-size:15px;text-align:center}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script type="module">
+import { CATEGORIES } from './menu-data.js';
+
+const WHATSAPP = '966554312474';
+const q = new URLSearchParams(location.search);
+const TABLE = (q.get('table') || q.get('t') || '').trim().slice(0, 8);
+
+let cat = null, openSection = null, cartOpen = false;
+let cart = {};
+try { cart = JSON.parse(localStorage.getItem('archsite-cart') || '{}'); } catch (e) {}
+const save = () => { try { localStorage.setItem('archsite-cart', JSON.stringify(cart)); } catch (e) {} };
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const totals = () => {
+  const e = Object.entries(cart);
+  return { qty: e.reduce((n, [, v]) => n + v.qty, 0), price: e.reduce((n, [, v]) => n + v.qty * v.price, 0), entries: e };
+};
+
+function change(name, price, d) {
+  const cur = cart[name] || { qty: 0, price };
+  const qty = cur.qty + d;
+  if (qty <= 0) delete cart[name]; else cart[name] = { qty, price };
+  save(); render();
+}
+
+function header() {
+  const active = CATEGORIES.find(c => c.id === cat);
+  return `<div class="hdr">
+    <img src="logo.svg" alt="Arch Restaurant &amp; Cafe">
+    ${active ? `<div style="font-size:26px;font-weight:800">${esc(active.label)}</div>`
+             : `<div style="font-size:15px;opacity:.95">Pick a category to browse the menu</div>`}
+    ${TABLE ? `<div class="tablebadge">Table ${esc(TABLE)}</div>` : ''}
+  </div>`;
+}
+
+function home() {
+  return `<div class="grid">` + CATEGORIES.map(c => {
+    const count = c.sections.reduce((n, s) => n + s.items.length, 0);
+    return `<button class="cat" data-cat="${c.id}">
+      <div class="ph" style="background-image:url('../${c.hero}')"></div>
+      <div class="bd"><h2>${esc(c.label)}</h2>
+        <span class="sub">${esc(c.sections.map(s => s.title).join(' · '))}</span>
+        <span class="more">${count} items →</span></div>
+    </button>`;
+  }).join('') + `</div>`;
+}
+
+function categoryView() {
+  const active = CATEGORIES.find(c => c.id === cat);
+  const tabs = `<div class="tabs"><button class="pill back" data-home="1">← All</button>` +
+    CATEGORIES.map(c => `<button class="pill ${c.id === cat ? 'on' : ''}" data-cat="${c.id}">${esc(c.label)}</button>`).join('') + `</div>`;
+  const list = active.sections.map(s => {
+    const open = openSection === s.title;
+    const thumb = s.items[0]?.img ? `background-image:url('../${s.items[0].img}')` : '';
+    const items = !open ? '' : s.items.map(it => {
+      const qty = cart[it.name]?.qty || 0;
+      return `<div class="item ${qty ? 'on' : ''}">
+        ${it.img ? `<div class="im" style="background-image:url('../${it.img}')"></div>` : ''}
+        <div class="nm"><b>${esc(it.name)}</b><span>${it.kcal} kcal</span></div>
+        <span class="price">SR ${it.price}</span>
+        ${qty ? `<div class="step"><button class="minus" data-d="-1" data-n="${esc(it.name)}" data-p="${it.price}">−</button><b>${qty}</b><button class="plus" data-d="1" data-n="${esc(it.name)}" data-p="${it.price}">+</button></div>`
+              : `<button class="add" data-d="1" data-n="${esc(it.name)}" data-p="${it.price}">+</button>`}
+      </div>`;
+    }).join('');
+    return `<div class="sec">
+      <button class="sechead ${open ? 'on' : ''}" data-sec="${esc(s.title)}">
+        <div class="th" style="${thumb}"></div>
+        <span class="tx"><b>${esc(s.title)}</b><span>${s.items.length} items</span></span>
+        <span class="ca">⌄</span>
+      </button>${items}</div>`;
+  }).join('');
+  return tabs + `<div class="list">${list}</div>`;
+}
+
+function bar() {
+  const t = totals();
+  if (!t.qty || cartOpen) return '';
+  return `<div class="bar"><button data-open="1"><span class="l"><span class="n">${t.qty}</span> View my selection</span><span style="font-weight:800;white-space:nowrap">SR ${t.price}</span></button></div>`;
+}
+
+function sheet() {
+  const t = totals();
+  if (!cartOpen || !t.qty) return '';
+  const lines = t.entries.map(([name, v]) => `${v.qty} × ${name} — SR ${v.qty * v.price}`).join('\n');
+  const head = TABLE ? `Arch Restaurant & Cafe — Table ${TABLE}\n\n` : 'Arch Restaurant & Cafe order\n\n';
+  const link = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(head + lines + `\nTotal: SR ${t.price}`)}`;
+  const rows = t.entries.map(([name, v]) => `<div class="row">
+      <div class="nm"><b>${esc(name)}</b><span>SR ${v.price} each</span></div>
+      <div class="step"><button class="minus" data-d="-1" data-n="${esc(name)}" data-p="${v.price}">−</button><b>${v.qty}</b><button class="plus" data-d="1" data-n="${esc(name)}" data-p="${v.price}">+</button></div>
+      <span class="price" style="min-width:56px;text-align:right">SR ${v.qty * v.price}</span></div>`).join('');
+  return `<div class="scrim" data-close="1"></div><div class="sheetwrap"><div class="sheet">
+    <div class="top"><span class="lt"><b>My selection</b>${TABLE ? `<span class="tb">Table ${esc(TABLE)}</span>` : ''}</span><button class="x" data-close="1">×</button></div>
+    <div class="rows">${rows}</div>
+    <div class="foot"><div class="tot"><span>Total</span><span>SR ${t.price}</span></div>
+      <div class="acts"><button class="clr" data-clear="1">Clear</button>
+      <a class="cta" href="${link}" target="_blank" rel="noopener">Send order on WhatsApp</a></div></div>
+  </div></div>`;
+}
+
+function render() {
+  document.getElementById('app').innerHTML = header() + (cat ? categoryView() : home()) + bar() + sheet();
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-cat],[data-home],[data-sec],[data-d],[data-open],[data-close],[data-clear]');
+  if (!el) return;
+  if (el.dataset.cat) { cat = el.dataset.cat; openSection = null; scrollTo(0, 0); }
+  else if (el.dataset.home) { cat = null; openSection = null; scrollTo(0, 0); }
+  else if (el.dataset.sec) { openSection = openSection === el.dataset.sec ? null : el.dataset.sec; }
+  else if (el.dataset.d) { change(el.dataset.n, Number(el.dataset.p), Number(el.dataset.d)); return; }
+  else if (el.dataset.open) { cartOpen = true; }
+  else if (el.dataset.close) { cartOpen = false; }
+  else if (el.dataset.clear) { cart = {}; save(); cartOpen = false; }
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
