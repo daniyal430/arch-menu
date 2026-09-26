@@ -120,6 +120,27 @@ html[dir=rtl] .close{right:auto;left:12px}
 html[dir=rtl] .nm{text-align:right}
 html[dir=rtl] .nm .ar,html[dir=rtl] .sheet .ar{text-align:right}
 footer .lg{font-family:var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-size:11px;margin-bottom:4px}
+
+/* ---- WhatsApp ordering ---- */
+.addrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
+.add{background:var(--rust);color:#fff;border-radius:999px;padding:11px 18px;font-weight:700;display:inline-flex;gap:8px;align-items:center;box-shadow:var(--shadow);transition:transform .15s}
+.add:active{transform:scale(.97)}.add small{font-weight:600;opacity:.85}
+.add.alt{background:var(--cream-2);color:var(--ink)}
+.cartbar{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:40;background:#1f7a45;color:#fff;border-radius:999px;padding:12px 16px 12px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:700;animation:up .25s ease-out;max-width:560px;margin:0 auto}
+body:has(.sheet-bg) .cartbar{display:none}
+main.wrap{padding-bottom:90px}
+.cartbar .n{background:rgba(255,255,255,.2);border-radius:999px;padding:2px 10px;font-size:13px}
+.cartbar .t{flex:1}.cartbar .go{display:flex;align-items:center;gap:8px}
+.cartbar svg{width:22px;height:22px;fill:#fff}
+.cart .line{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.cart .line .nm{flex:1;font-weight:700}.cart .line .nm small{display:block;font-weight:600;color:var(--ink-2)}
+.qty{display:flex;align-items:center;gap:8px}.qty button{width:32px;height:32px;border-radius:50%;background:var(--cream-2);font-weight:800;font-size:18px;line-height:1}.qty b{min-width:18px;text-align:center}
+.cart .total{display:flex;justify-content:space-between;font-size:18px;font-weight:800;padding:14px 0 6px}
+.cart .opts{display:flex;gap:8px;margin:10px 0}.cart .opts button{flex:1;padding:10px;border-radius:12px;background:var(--cream-2);font-weight:700}.cart .opts button[aria-pressed=true]{background:var(--rust);color:#fff}
+.cart .wa{display:flex;justify-content:center;align-items:center;gap:10px;background:#1f7a45;color:#fff;border-radius:999px;padding:14px;font-weight:800;font-size:16px;text-decoration:none;margin-top:8px}
+.cart .wa svg{width:22px;height:22px;fill:#fff}
+.cart .hint{font-size:12px;color:var(--ink-2);text-align:center;margin-top:10px}
+.cart .clear{display:block;margin:6px auto 0;font-size:13px;color:var(--ink-2);text-decoration:underline}
 </style>
 
 </head>
@@ -223,10 +244,11 @@ function openItem(it){
    <button class="close" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg></button></div>
    <div class="body"><h3>${esc(nm(it))}</h3>${alt(it)?`<p class="ar" dir="${L==='ar'?'ltr':'rtl'}">${esc(alt(it))}</p>`:''}
    <div class="meta">${typeof it.price==='number'?`<span class="chip p">${SR()} ${it.price}</span>`:esc(priceStr(it.price)).split(' · ').map(p=>`<span class="chip p">${p}</span>`).join(' ')}${it.kcal!=null?`<span class="chip k">${it.kcal} ${T('kcal',UI.kcal)}</span>`:''}</div>
-   ${it.desc?`<p class="desc">${esc(L==='ar'&&it.desc_ar?it.desc_ar:it.desc)}</p>`:''}<p class="catlink">${esc(catName(it.cat))}</p></div></div>`;
+   ${addButtons(it)}${it.desc?`<p class="desc">${esc(L==='ar'&&it.desc_ar?it.desc_ar:it.desc)}</p>`:''}<p class="catlink">${esc(catName(it.cat))}</p></div></div>`;
   document.body.appendChild(d); document.body.style.overflow='hidden';
   d.querySelector('[data-close]').focus();
 }
+function addButtons(it){return `<div class="addrow">${variants(it).map((v,i)=>`<button class="add ${i?'alt':''}" data-add="${it.id}" data-v="${i}">+ ${T('Add','أضف')}${v.label?` <small>${esc(priceStr(v.label))}</small>`:''} · ${SR()} ${v.price}</button>`).join('')}</div>`;}
 function closeSheet(){const s=$('.sheet-bg'); if(s){s.remove();document.body.style.overflow='';}}
 document.addEventListener('click',e=>{
   const t=e.target;
@@ -240,6 +262,48 @@ document.addEventListener('click',e=>{
 document.addEventListener('input',e=>{ if(e.target.id==='q'){state.q=e.target.value; state.cat=null; if(!state.q.trim()){render();} else renderSearch();} });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('.sheet-bg')) closeSheet(); else if(state.cat){state.cat=null;render();} } });
 applyLang(); render();
+
+/* ===== WhatsApp ordering ===== */
+const WA_NUMBER='966554312474';
+const BACKOFFICE='https://daniyal430.github.io/arch-backoffice/';
+let cart=[]; try{cart=JSON.parse(localStorage.getItem('cart')||'[]');}catch(e){}
+let otype='P';
+function saveCart(){try{localStorage.setItem('cart',JSON.stringify(cart));}catch(e){}renderCartBar();}
+function variants(it){ if(typeof it.price==='number') return [{key:'',label:'',price:it.price}];
+  return [...String(it.price).matchAll(/([A-Za-z0-9 ]+?) SR (\d+)/g)].map((m,i)=>({key:'abc'[i],label:m[1].trim(),price:+m[2]})); }
+function addToCart(it,v){const key=it.id+v.key;const ex=cart.find(l=>l.key===key);if(ex)ex.qty++;else cart.push({key,id:it.id,vkey:v.key,name:it.name+(v.label?' ('+v.label+')':''),ar:(it.ar||'')+(v.label?' ('+(priceStr(v.label))+')':''),price:v.price,qty:1});saveCart();closeSheet();}
+function cartCount(){return cart.reduce((a,l)=>a+l.qty,0);} function cartTotal(){return cart.reduce((a,l)=>a+l.qty*l.price,0);}
+function renderCartBar(){let bar=$('.cartbar');if(!cart.length){if(bar)bar.remove();return;}
+  if(!bar){bar=document.createElement('button');bar.className='cartbar';bar.dataset.cart='1';document.body.appendChild(bar);}
+  bar.innerHTML=`<span class="n">${cartCount()}</span><span class="t">${T('Your order','طلبك')} · ${SR()} ${cartTotal()}</span><span class="go">${T('Order on WhatsApp','اطلب عبر واتساب')} ${waIcon()}</span>`;}
+function waIcon(){return '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 12 12 0 0 0 4.6 4c1.7.7 2.3.8 3.1.7a2.6 2.6 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.2c0-.2-.2-.3-.5-.4z"/></svg>';}
+function orderCode(){const t=Date.now().toString(36).toUpperCase().slice(-4);const r=Math.floor(Math.random()*36).toString(36).toUpperCase();return 'A'+t+r;}
+function openCart(){
+  const old=$('.sheet-bg'); if(old) old.remove();
+  const code=orderCode();
+  const d=document.createElement('div'); d.className='sheet-bg';
+  const lines=cart.map(l=>`<div class="line"><div class="nm">${esc(L==='ar'&&l.ar?l.ar:l.name)}<small>${SR()} ${l.price}</small></div><div class="qty"><button data-q="${l.key}" data-d="-1" aria-label="less">−</button><b>${l.qty}</b><button data-q="${l.key}" data-d="1" aria-label="more">+</button></div></div>`).join('');
+  const typeTxt=otype==='D'?T('Delivery','توصيل'):T('Pickup','استلام');
+  const msg=[`*Arch View – ${T('Order','طلب')} #${code}*`,typeTxt,'',...cart.map(l=>`${l.qty}× ${l.name}${L==='ar'&&l.ar?' – '+l.ar:''} – SR ${l.qty*l.price}`),'',`*${T('Total','الإجمالي')}: SR ${cartTotal()}*`,'',otype==='D'?T('Delivery address: ','عنوان التوصيل: '):'',`_staff: ${BACKOFFICE}#o-${code}-${otype}-${cart.map(l=>l.id+l.vkey+'x'+l.qty).join('-')}_`].filter(x=>x!==undefined).join('\n');
+  const href=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  d.innerHTML=`<div class="sheet cart" role="dialog" aria-modal="true" aria-label="Your order"><div class="body"><h3>${T('Your order','طلبك')} <small style="font-weight:600;color:var(--ink-2)">#${code}</small></h3>
+   ${lines}<div class="total"><span>${T('Total','الإجمالي')}</span><span>${SR()} ${cartTotal()}</span></div>
+   <div class="opts"><button data-type="P" aria-pressed="${otype==='P'}">${T('Pickup','استلام')}</button><button data-type="D" aria-pressed="${otype==='D'}">${T('Delivery','توصيل')}</button></div>
+   <a class="wa" href="${href}" target="_blank" rel="noopener" data-send>${waIcon()} ${T('Send order on WhatsApp','أرسل الطلب عبر واتساب')}</a>
+   <p class="hint">${T('WhatsApp opens with your order ready to send to 0554312474. We confirm and prepare it right away.','سيفتح واتساب وطلبك جاهز للإرسال إلى 0554312474. سنؤكده ونجهزه فوراً.')}</p>
+   <button class="clear" data-clear>${T('Clear order','مسح الطلب')}</button></div></div>`;
+  document.body.appendChild(d); document.body.style.overflow='hidden';
+}
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const a=t.closest('[data-add]'); if(a){const it=MENU.items[+a.dataset.add];const v=variants(it)[+a.dataset.v];addToCart(it,v);return;}
+  if(t.closest('[data-cart]')){openCart();return;}
+  const q=t.closest('[data-q]'); if(q){const l=cart.find(x=>x.key===q.dataset.q);if(l){l.qty+=+q.dataset.d;if(l.qty<=0)cart=cart.filter(x=>x!==l);}saveCart();if(cart.length)openCart();else closeSheet();return;}
+  const ty=t.closest('[data-type]'); if(ty){otype=ty.dataset.type;openCart();return;}
+  if(t.closest('[data-clear]')){cart=[];saveCart();closeSheet();return;}
+  if(t.closest('[data-send]')){setTimeout(()=>{cart=[];saveCart();closeSheet();},800);}
+},true);
+renderCartBar();
 </script>
 
 </body>
